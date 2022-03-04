@@ -1,7 +1,11 @@
+package strategy;
+
+import main.TradeResult;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class StrategyB implements StrategyADT{
+public class StrategyD implements StrategyADT{
 
     @Override
     public TradeResult performRule(String traderName, ArrayList<String> coinList, HashMap coinPriceList) {

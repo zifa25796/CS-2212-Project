@@ -1,3 +1,7 @@
+package strategy;
+
+import main.TradeResult;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 

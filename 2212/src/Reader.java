@@ -1,4 +1,0 @@
-import
-
-public class Reader {
-}
