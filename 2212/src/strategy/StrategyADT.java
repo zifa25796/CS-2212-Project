@@ -6,5 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public interface StrategyADT {
-    public TradeResult performRule(String traderName, ArrayList<String> coinList, HashMap coinPriceList);
+    public TradeResult performRule(String traderName, HashMap coinPriceList);
+    public int getCounter();
+    public String getName();
 }

@@ -1,5 +1,7 @@
 package main;
 
+import crawler.AvailableCryptoList;
+import crawler.DataFetcher;
 import gui.LoginForm;
 import gui.MainUI;
 
@@ -7,19 +9,20 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public class User {
 
     private static User instance;
+    public MainUI mainUI;
     private ArrayList<TradeResult> tradeLog;
     private ArrayList<TradeBroker> brokerList;
-    private ArrayList<String> coinList;
 
     public User() {
         this.tradeLog = new ArrayList<>();
         this.brokerList = new ArrayList<>();
-        this.coinList = new ArrayList<>();
     }
 
     public static void main(String[] args) throws InterruptedException {
@@ -36,7 +39,7 @@ public class User {
     }
 
     private void performMainUI() {
-        MainUI mainUI = new MainUI();
+        mainUI = new MainUI();
         mainUI.display();
     }
 
@@ -44,11 +47,30 @@ public class User {
         this.tradeLog.add(result);
     }
 
+    public ArrayList<TradeResult> getTradeLog() { return this.tradeLog; }
+
     public void addBroker(TradeBroker broker) {
         this.brokerList.add(broker);
     }
 
-    public void setCoinList() {
+    public ArrayList<TradeBroker> getBrokerList() { return this.brokerList; }
+
+    public void setBrokerListNull() {
+        brokerList = new ArrayList<TradeBroker>();
+    }
+
+    public void trade(ArrayList<String> coinList) {
+        DataFetcher fetcher = new DataFetcher();
+        HashMap<String, Double> coinPriceList = fetcher.getCoinPriceList(coinList);
+        System.out.println(coinPriceList.toString());
+
+        for (TradeBroker broker: brokerList) {
+            HashMap<String, Double> currPriceList = new HashMap<>();
+            for (String coin: broker.getCoinList()) {
+                currPriceList.put(coin, coinPriceList.get(coin));
+            }
+            tradeLog.add(broker.trade(currPriceList));
+        }
 
     }
 
@@ -59,11 +81,4 @@ public class User {
         return instance;
     }
 
-    public class MainUI_Listener extends JFrame implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-
-        }
-    }
 }
