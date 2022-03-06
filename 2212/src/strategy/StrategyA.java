@@ -28,7 +28,6 @@ public class StrategyA implements StrategyADT{
         counter++;
     }
 
-    // 实际上只要传入strategy关系的coin就足够输出结果，剩下来的不影响计算，所以并不遍历所有的了
     @Override
     public TradeResult performRule(String traderName, HashMap coinPriceList) {
         if (checkNecessary(coinPriceList)) {
@@ -72,8 +71,10 @@ public class StrategyA implements StrategyADT{
         return true;
     }
 
+    @Override
     public int getCounter() { return counter; }
 
+    @Override
     public String getName() {
         return "Strategy-A";
     }

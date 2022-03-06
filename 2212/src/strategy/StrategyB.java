@@ -72,8 +72,10 @@ public class StrategyB implements StrategyADT{
         return true;
     }
 
+    @Override
     public int getCounter() { return counter; }
 
+    @Override
     public String getName() {
         return "Strategy-B";
     }
