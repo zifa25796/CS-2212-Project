@@ -32,7 +32,7 @@ public class User {
     private ArrayList<TradeBroker> brokerList;
 
     /**
-     * User class initializer
+     * {@link User} class initializer
      */
     public User() {
         this.tradeLog = new ArrayList<>();

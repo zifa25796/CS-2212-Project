@@ -9,32 +9,76 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * <p>This class represents the login process.</p>
+ * <p>It handles the login request and verifies the data with database {@link Reader}</p>
+ */
 public class LoginForm {
+    /**
+     * A variable representing the main frame
+     */
     private JFrame frame;
+    /**
+     * A variable representing the main panel in the main frame
+     */
     private JPanel panel;
+    /**
+     * A const value containing the Window Width
+     */
     private static final int WindowWidth  = 290;
+    /**
+     * A const value containing the Window Height
+     */
     private static final int WindowHeight = 160;
+    /**
+     * A variable representing the text field for username input
+     */
     private JTextField user_TEXT;
+    /**
+     * A variable representing the text field for password input
+     */
     private JPasswordField pass_TEXT;
+    /**
+     * A variable representing the {@link Reader} Object
+     */
     private Reader reader;
+    /**
+     * <p>A flag represents the login state</p>
+     * <p><b>True</b>: Login Success</p>
+     * <p><b>False</b>: Login Pending</p>
+     */
     private Boolean loginFlag;
 
+    /**
+     * {@link LoginForm} class initializer
+     */
     public LoginForm() {
+        // Create Reader Object
         reader = new Reader();
+        // Init Flag to false, meaning pending
         loginFlag = false;
+        // Initialize window frame
         initFrame();
+        // Initialize window components, such as buttons, chars
         initComponents();
+        // Render window and display
         renderFrame();
     }
 
+    /**
+     * Initialize window frame object, and set all the properties
+     */
     private void initFrame() {
-        // New Window
+        // Create JFrame Object with window name Login
         frame = new JFrame("Login");
         Dimension ScreenDimension = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setLocation((ScreenDimension.width - WindowWidth) / 2, (ScreenDimension.height - WindowHeight) / 2);
         frame.setPreferredSize(new Dimension(WindowWidth, WindowHeight));
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        ImageIcon img = new ImageIcon("icon\\crypto.png");
+        frame.setIconImage(img.getImage());
 
         panel = new JPanel();
         frame.add(panel);
