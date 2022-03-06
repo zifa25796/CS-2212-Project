@@ -1,7 +1,7 @@
 # CS-2212-Project
 
 ## To run the program
-Run [User.java](https://github.com/zifa25796/CS-2212-Project/blob/main/2212/src/main/User.java)
+Run [2212/src/main/](https://github.com/zifa25796/CS-2212-Project/tree/main/2212/src/main)[User.java](https://github.com/zifa25796/CS-2212-Project/blob/main/2212/src/main/User.java)
 
 ## Required support files
 Please add the following to your Modular Dependencies.The files can be find [here](https://github.com/zifa25796/CS-2212-Project/tree/main/2212/Lib).
