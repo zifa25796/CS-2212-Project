@@ -67,24 +67,39 @@ public class LoginForm {
 
     /**
      * Initialize window frame object, and set all the properties
+     * @see JFrame
      */
     private void initFrame() {
         // Create JFrame Object with window name Login
         frame = new JFrame("Login");
+        // Get screen size
         Dimension ScreenDimension = Toolkit.getDefaultToolkit().getScreenSize();
+        // Set window location to the middle of the screen
+        // Formula: (screen size - window - size) / 2
         frame.setLocation((ScreenDimension.width - WindowWidth) / 2, (ScreenDimension.height - WindowHeight) / 2);
+        // Set window size to const window size
         frame.setPreferredSize(new Dimension(WindowWidth, WindowHeight));
+        // Set window to un-resizeable
         frame.setResizable(false);
+        // Set program to end on EXIT event
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        // Create ImageIcon Object, and set window icon to "icon\crypto.png"
         ImageIcon img = new ImageIcon("icon\\crypto.png");
         frame.setIconImage(img.getImage());
 
+        // Create JPanel Object and add it to main frame
         panel = new JPanel();
         frame.add(panel);
     }
 
+    /**
+     * Initialize window components
+     * @see JPanel
+     * @see JComponent
+     */
     private void initComponents() {
+        // Set panel to no layout
         panel.setLayout(null);
 
         // Username Label
@@ -112,19 +127,92 @@ public class LoginForm {
         login_BTN.setBounds((WindowWidth - 80)/2, 85, 80, 25);
         panel.add(login_BTN);
 
+        // Set Login Btn to default button
+        // Now and hit enter to push button
         JRootPane rootPane = SwingUtilities.getRootPane(login_BTN);
         rootPane.setDefaultButton(login_BTN);
 
+        // Add event listener to Login Button
         login_BTN.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // verifies username and password
                 if (login(getUsername(), getPassword())) {
+                    // Set flag to true, login success
                     loginFlag = true;
+                    // Dispose main frame
                     frame.dispose();
                 } else {
+                    // Show error message for failed login
                     JOptionPane.showMessageDialog(frame, "Login Failed: Your username or password is incorrect");
+                    // Dispose main frame
                     frame.dispose();
+                    // Close program
                     System.exit(0);
+
+                    // Comment Jump to end of file, #1
+                }
+            }
+        });
+    }
+
+    /**
+     * Login verification
+     * @param username {@link String} username
+     * @param password {@link String} password
+     * @return <P>{@link Boolean}</P><p>True: verification success</p> <p>False: verification failed</p>
+     */
+    private Boolean login(String username, String password) {
+        // Call getter method to get JsonArray of username and password
+        JsonArray array = reader.getUserList();
+        // For each element in array
+        for (int i = 0; i < array.size(); i++) {
+            JsonObject object = array.get(i).getAsJsonObject();
+            // If username and password matched up return true
+            if (object.get("username").getAsString().equals(username) && object.get("password").getAsString().equals(password)) {
+                return true;
+            }
+        }
+        // If none matched up return false
+        return false;
+    }
+
+    /**
+     * Render and display window
+     */
+    private void renderFrame() {
+        // Display
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    /**
+     * Getter method for loginFlag
+     * @return loginFlag
+     */
+    public Boolean getLoginFlag() {
+        return loginFlag;
+    }
+
+    /**
+     * Getter method for username
+     * @return
+     */
+    private String getUsername() {
+        return user_TEXT.getText();
+    }
+
+    /**
+     * Getter method for password
+     * @return
+     */
+    private String getPassword() {
+        return String.valueOf(pass_TEXT.getPassword());
+    }
+}
+
+// Comment Jump #1
+// Second approach for the Error Message
 //                    int errorWndWidth = 250;
 //                    int errorWndHeight = 120;
 //                    JFrame errorFrame = new JFrame("Login Failed");
@@ -164,39 +252,3 @@ public class LoginForm {
 //
 //                    errorFrame.pack();
 //                    errorFrame.setVisible(true);
-                }
-            }
-        });
-    }
-
-    private Boolean login(String username, String password) {
-        JsonArray array = reader.getUserList();
-        for (int i = 0; i < array.size(); i++) {
-            JsonObject object = array.get(i).getAsJsonObject();
-            if (object.get("username").getAsString().equals(username) && object.get("password").getAsString().equals(password)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public Boolean getLoginFlag() {
-        return loginFlag;
-    }
-
-    private void renderFrame() {
-        // Display
-        frame.pack();
-        frame.setVisible(true);
-    }
-
-    private String getUsername() {
-        return user_TEXT.getText();
-    }
-
-    private String getPassword() {
-        return String.valueOf(pass_TEXT.getPassword());
-    }
-
-
-}
