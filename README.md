@@ -3,6 +3,11 @@
 ## To run the program
 Run [2212/src/main/](https://github.com/zifa25796/CS-2212-Project/tree/main/2212/src/main)[User.java](https://github.com/zifa25796/CS-2212-Project/blob/main/2212/src/main/User.java)
 
+## File detail
+[2212/src](https://github.com/zifa25796/CS-2212-Project/tree/main/2212/src): program source code location
+[2212/icon](https://github.com/zifa25796/CS-2212-Project/tree/main/2212/icon): program icon location
+[2212/lib](https://github.com/zifa25796/CS-2212-Project/tree/main/2212/Lib): Required support files location
+
 ## Required support files
 Please add the following to your Modular Dependencies.The files can be find [here](https://github.com/zifa25796/CS-2212-Project/tree/main/2212/Lib).
 
