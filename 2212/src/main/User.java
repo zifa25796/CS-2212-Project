@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
- * This class represents a user of the system.
- * It controls the main thread.
+ * <p>This class represents a user of the system.</p>
+ * <p>It controls the main thread.</p>
  */
 public class User {
 
