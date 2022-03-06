@@ -5,7 +5,9 @@ Run [2212/src/main/](https://github.com/zifa25796/CS-2212-Project/tree/main/2212
 
 ## File detail
 [2212/src](https://github.com/zifa25796/CS-2212-Project/tree/main/2212/src): program source code location
+
 [2212/icon](https://github.com/zifa25796/CS-2212-Project/tree/main/2212/icon): program icon location
+
 [2212/lib](https://github.com/zifa25796/CS-2212-Project/tree/main/2212/lib): Required support files location
 
 ## Required support files
