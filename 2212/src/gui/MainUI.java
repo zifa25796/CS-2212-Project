@@ -217,7 +217,10 @@ public class MainUI {
                         // For each row in the table
                         for (int count = 0; count < dtm.getRowCount(); count++) {
                             // If the row number equals to the event triggered row number, or current row have an empty value
-                            if (e.getFirstRow() == count || dtm.getValueAt(count, 0) == null) {
+                            if (e.getFirstRow() == count ||
+                                    dtm.getValueAt(count, 0) == null ||
+                                    dtm.getValueAt(count, 0).toString().equals("") ||
+                                    dtm.getValueAt(e.getFirstRow(), 0).toString().equals("")) {
                                 // Pass this for loop
                                 continue;
                             }
@@ -342,14 +345,14 @@ public class MainUI {
         // For each row, check if any of them are empty
         for (int count = 0; count < dtm.getRowCount(); count++){
             Object traderObject = dtm.getValueAt(count, 0);
-            if (traderObject == null) {
+            if (traderObject == null || traderObject.toString().equals("")) {
                 JOptionPane.showMessageDialog(frame, "please fill in Trader name on line " + (count + 1) );
                 return null;
             }
             String traderName = traderObject.toString();
 
             Object coinObject = dtm.getValueAt(count, 1);
-            if (coinObject == null) {
+            if (coinObject == null || coinObject.toString().equals("")) {
                 JOptionPane.showMessageDialog(frame, "please fill in cryptocoin list on line " + (count + 1) );
                 return null;
             }
