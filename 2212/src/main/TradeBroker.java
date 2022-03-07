@@ -4,6 +4,7 @@ import strategy.StrategyADT;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * <p>This class represents the trade broker created by the user</p>
@@ -21,6 +22,10 @@ public class TradeBroker {
      * A variable containing the strategy this Broker is using
      */
     private StrategyADT strategy;
+    /**
+     * A variable containing the row number of this broker in the table
+     */
+    private int rowNum;
 
     /**
      * {@link TradeBroker} class initializer
@@ -28,13 +33,14 @@ public class TradeBroker {
      * @param coinList Interested coin list
      * @param strategy Strategy Used
      */
-    public TradeBroker(String name, String[] coinList, StrategyADT strategy) {
+    public TradeBroker(String name, String[] coinList, StrategyADT strategy, int rowNum) {
         this.name = name;
         this.coinList = new ArrayList<>();
         for (String coin: coinList) {
             this.coinList.add(coin);
         }
         this.strategy = strategy;
+        this.rowNum = rowNum;
     }
 
     /**
@@ -83,10 +89,34 @@ public class TradeBroker {
     public StrategyADT getStrategy() { return this.strategy; }
 
     /**
+     * Setter method for coin list
+     * @param coinList
+     */
+    public void setCoinList(String coinList) {
+        for (String coin: coinList.toString().split(",")) {
+            this.coinList.add(coin);
+        }
+    }
+
+    /**
      * Getter method for coin list
      * @return
      */
     public ArrayList<String> getCoinList() {
         return coinList;
     }
+
+    /**
+     * Getter method for rowNum
+     * @return
+     */
+    public int getRowNum() {
+        return rowNum;
+    }
+
+    /**
+     * Setter methof for rowNum
+     * @param rowNum
+     */
+    public void setRowNum(int rowNum) { this.rowNum = rowNum; }
 }

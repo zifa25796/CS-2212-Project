@@ -99,7 +99,7 @@ public class User {
      * @param broker {@link TradeBroker} that need to be added
      */
     public void addBroker(TradeBroker broker) {
-        this.brokerList.add(broker);
+        this.brokerList.add(broker.getRowNum(), broker);
     }
 
     /**
@@ -109,12 +109,29 @@ public class User {
     public ArrayList<TradeBroker> getBrokerList() { return this.brokerList; }
 
     /**
+     * Getter methof for {@link TradeBroker} at index of rowNum
+     * @param rowNum index
+     * @return {@link TradeBroker}
+     */
+    public TradeBroker getBrokerAt(int rowNum) {
+        return brokerList.get(rowNum);
+    }
+
+    /**
      * Setter method for {@link ArrayList<TradeBroker>} brokerList
      * It creates a new ArrayList to clear the old data
      */
     public void setBrokerListNull() {
         brokerList = new ArrayList<TradeBroker>();
     }
+
+    public void newBroker(int rowNum) { addBroker(new TradeBroker("", new String[]{}, null, rowNum));}
+
+    /**
+     * Remove methof or {@link ArrayList<TradeBroker>} brokerList
+     * @param rowNum
+     */
+    public void removeBroker(int rowNum) { brokerList.remove(rowNum); }
 
     /**
      * The trading process

@@ -210,7 +210,7 @@ public class DataVisualizationCreator {
         // Set the value of the bar graph
         // 1. counter
         // 2. broker name
-        // 3. strategy name
+        // 3. strategy nam
         for (TradeBroker broker: User.getInstance().getBrokerList()) {
             dataset.setValue((double)broker.getStrategy().getCounter(), (Comparable)broker.getName(), (Comparable)broker.getStrategy().getName());
         }

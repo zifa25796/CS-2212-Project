@@ -1,5 +1,6 @@
 package gui;
 
+import com.sun.tools.javac.Main;
 import main.TradeBroker;
 import main.User;
 import org.jfree.chart.ChartPanel;
@@ -7,6 +8,8 @@ import strategy.*;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import java.awt.*;
@@ -68,9 +71,9 @@ public class MainUI {
      */
     private int ScrollWidth, ScrollHeight, WestWidth, WestHeight;
     /**
-     * A variable containing the strategy name, and it's represented strategy class
+     * A static variable containing the strategy name, and it's represented strategy class
      */
-    public HashMap<String, StrategyADT> strategyHashMap;
+    public static HashMap<String, StrategyADT> strategyHashMap;
 
     /**
      * {@link MainUI} class initializer
@@ -82,6 +85,8 @@ public class MainUI {
         initComponents();
         // Initialize strategy hash map
         initStrategyMap();
+        // Create first empty broker
+        User.getInstance().newBroker(0);
     }
 
     /**
@@ -170,12 +175,12 @@ public class MainUI {
         // Added to the bottom panel
         south.add(trade);
 
-        // Set trade Btn to default button
-        // Now and hit enter to push button
-        JRootPane rootPane = SwingUtilities.getRootPane(trade);
-        rootPane.setDefaultButton(trade);
+//        // Set trade Btn to default button
+//        // Now and hit enter to push button
+//        JRootPane rootPane = SwingUtilities.getRootPane(trade);
+//        rootPane.setDefaultButton(trade);
 
-        // Add even listener for Trade button
+        // Add event listener for Trade button
         trade.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -190,7 +195,7 @@ public class MainUI {
                 // Perform the trading process
                 User.getInstance().trade(coinList);
 
-                // Remove all charts tables from the left panel
+                //  all charts tables from the left panel
                 stats.removeAll();
                 // Recreate new chats tables and draw them
                 DataVisualizationCreator creator = new DataVisualizationCreator();
@@ -200,6 +205,55 @@ public class MainUI {
 
         // New table with three column for broker information
         dtm = new DefaultTableModel(new Object[] {"Trading Client", "Coin List", "Strategy Name"}, 1);
+        // Add event listener for the table
+        dtm.addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                // When monitored change in the table
+                // Three different cases represents three different column change
+                switch (e.getColumn()) {
+                    // Trading Client, avoid repeating names
+                    case 0:
+                        // For each row in the table
+                        for (int count = 0; count < dtm.getRowCount(); count++) {
+                            // If the row number equals to the event triggered row number, or current row have an empty value
+                            if (e.getFirstRow() == count || dtm.getValueAt(count, 0) == null) {
+                                // Pass this for loop
+                                continue;
+                            }
+
+                            // If there is an same name, reset the value, and show an error msg
+                            if (dtm.getValueAt(count, 0).toString().equals(dtm.getValueAt(e.getFirstRow(), 0).toString())) {
+                                showMsg("Name already exists");
+                                // Reset value
+                                dtm.setValueAt("", e.getFirstRow(), 0);
+                                return;
+                            }
+                        }
+                        // Set this broker's name
+                        User.getInstance().getBrokerAt(e.getFirstRow()).setName(dtm.getValueAt(e.getFirstRow(), 0).toString());
+                        break;
+                    case 1:
+                        try {
+                            // Set this broker's coin list
+                            User.getInstance().getBrokerAt(e.getFirstRow()).setCoinList(dtm.getValueAt(e.getFirstRow(), 1).toString());
+                        } catch (Exception ex) {
+                        }
+                        break;
+                    case 2:
+                        try {
+                            // Set this broker's strategy
+                            User.getInstance().getBrokerAt(e.getFirstRow()).setStrategy(MainUI.strategyHashMap.get(dtm.getValueAt(e.getFirstRow(), 2).toString()));
+                        } catch (Exception ex) {
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        });
+
         table = new JTable(dtm);
 
         // New Scroll panel for broker information
@@ -210,7 +264,6 @@ public class MainUI {
 
         // Create a dropdown selector to chose Strategy
         Vector<String> strategyNames = new Vector<>();
-        strategyNames.add("(None)");
         strategyNames.add("Strategy-A");
         strategyNames.add("Strategy-B");
         strategyNames.add("Strategy-C");
@@ -228,6 +281,8 @@ public class MainUI {
             public void actionPerformed(ActionEvent e) {
                 // Add a row with three column
                 dtm.addRow(new String[3]);
+                // Add a new broker to the broker list
+                User.getInstance().newBroker(dtm.getRowCount() - 1);
             }
         });
 
@@ -239,6 +294,10 @@ public class MainUI {
             public void actionPerformed(ActionEvent e) {
                 // Gets the row user selects
                 int selectedRow = table.getSelectedRow();
+                User.getInstance().removeBroker(selectedRow);
+                for (int i = selectedRow + 1; i < User.getInstance().getBrokerList().size() - 1; i++) {
+                    User.getInstance().getBrokerAt(i).setRowNum(i - 1);
+                }
                 if (selectedRow != -1)
                     // Remove the row
                     dtm.removeRow(selectedRow);
@@ -280,7 +339,6 @@ public class MainUI {
      */
     private ArrayList<String> checkDTM() {
         ArrayList<String> coinList = new ArrayList<>();
-        User.getInstance().setBrokerListNull();
         // For each row, check if any of them are empty
         for (int count = 0; count < dtm.getRowCount(); count++){
             Object traderObject = dtm.getValueAt(count, 0);
@@ -306,8 +364,6 @@ public class MainUI {
             }
             String strategyName = strategyObject.toString();
 //            System.out.println(traderName + " " + Arrays.toString(coinNames) + " " + strategyName);
-            // If all requirements are satisfied, add the coins to the coinlist
-            User.getInstance().addBroker(new TradeBroker(traderName, coinNames, strategyHashMap.get(strategyName)));
         }
         return coinList;
     }
