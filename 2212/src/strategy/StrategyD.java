@@ -115,6 +115,6 @@ public class StrategyD implements StrategyADT{
 
     @Override
     public String getName() {
-        return "Strategy-A";
+        return "Strategy-D";
     }
 }
