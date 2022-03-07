@@ -61,12 +61,12 @@ public class StrategyC implements StrategyADT{
                 // Add counter, since trade success
                 addCounter();
                 // Return a success trade result
-                return new TradeResult(traderName, "Strategy-A", "ETH", "Buy", 60, 12.34, getDate("dd-MMM-YYYY"));
+                return new TradeResult(traderName, "Strategy-C", "ETH", "Buy", 60, 12.34, getDate("dd-MMM-YYYY"));
             }
         } else {
             // If no, show an error message, and return a Failed trade result
             User.getInstance().mainUI.showMsg("Trading strategy can not be applied");
-            return new TradeResult(traderName, "Strategy-A", "", "Fail", -1, -1, getDate("dd-MMM-YYYY"));
+            return new TradeResult(traderName, "Strategy-C", "", "Fail", -1, -1, getDate("dd-MMM-YYYY"));
         }
         return null;
     }

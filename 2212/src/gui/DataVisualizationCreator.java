@@ -3,6 +3,7 @@ package gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
@@ -211,8 +212,27 @@ public class DataVisualizationCreator {
         // 1. counter
         // 2. broker name
         // 3. strategy nam
-        for (TradeBroker broker: User.getInstance().getBrokerList()) {
-            dataset.setValue((double)broker.getStrategy().getCounter(), (Comparable)broker.getName(), (Comparable)broker.getStrategy().getName());
+//        for (TradeBroker broker: User.getInstance().getBrokerList()) {
+//            dataset.setValue((double)broker.getStrategy().getCounter(), (Comparable)broker.getName(), (Comparable)broker.getStrategy().getName());
+//        }
+
+        HashMap<String, HashMap<String, Integer>> BarChartData = new HashMap<>();
+        for (TradeResult result: User.getInstance().getTradeLog()) {
+            if (!BarChartData.containsKey(result.name)) {
+                BarChartData.put(result.name, new HashMap<>());
+            }
+            HashMap<String, Integer> temp = BarChartData.get(result.name);
+            if (temp.containsKey(result.strategy)) {
+                temp.put(result.strategy, temp.get(result.strategy) + 1);
+            } else {
+                temp.put(result.strategy, 1);
+            }
+        }
+
+        for (String nameKey: BarChartData.keySet()) {
+            for (String stratKey: BarChartData.get(nameKey).keySet()) {
+                dataset.setValue((double)BarChartData.get(nameKey).get(stratKey), (Comparable)nameKey, (Comparable)stratKey);
+            }
         }
 
         CategoryPlot plot = new CategoryPlot();
