@@ -29,8 +29,14 @@ import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 
+/**
+ * This class supports the MainUI to display the tables
+ */
 public class DataVisualizationCreator {
 
+    /**
+     * Create the tables
+     */
     public void createCharts() {
 //		createTextualOutput();
         createTableOutput();
@@ -58,9 +64,14 @@ public class DataVisualizationCreator {
 //		MainUI.getInstance().updateStats(scrollPane);
     }
 
+    /**
+     * Create the chart for {@link TradeResult}
+     */
     private void createTableOutput() {
+        // Column Name
         Object[] columnNames = {"Trader","Strategy","CryptoCoin","Action","Quantity","Price","Date"};
 
+        // Row Data
         Object[][] data = new Object[User.getInstance().getTradeLog().size()][7];
         int resultCounter = 0;
         for (TradeResult result: User.getInstance().getTradeLog()) {
@@ -74,22 +85,19 @@ public class DataVisualizationCreator {
             resultCounter++;
         }
 
-
+        // Create JTable Object, and set properties
         JTable table = new JTable(data, columnNames);
-        //table.setPreferredSize(new Dimension(600, 300));
-
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setBorder (BorderFactory.createTitledBorder (BorderFactory.createEtchedBorder (),
                 "Trader Actions",
                 TitledBorder.CENTER,
                 TitledBorder.TOP));
 
-
-
         scrollPane.setPreferredSize(new Dimension(User.getInstance().mainUI.WindowWidth / 5 * 2, User.getInstance().mainUI.WindowHeight / 2));
         scrollPane.setLocation(0, 0);
         table.setFillsViewportHeight(true);
 
+        // Added to main frame
         User.getInstance().mainUI.setChartPanel(scrollPane);
     }
 
@@ -193,10 +201,16 @@ public class DataVisualizationCreator {
         User.getInstance().mainUI.updateStats(chartPanel);
     }
 
+    /**
+     * Create the bar graph for {@link strategy}
+     */
     private void createBar() {
-
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
+        // Set the value of the bar graph
+        // 1. counter
+        // 2. broker name
+        // 3. strategy name
         for (TradeBroker broker: User.getInstance().getBrokerList()) {
             dataset.setValue((double)broker.getStrategy().getCounter(), (Comparable)broker.getName(), (Comparable)broker.getStrategy().getName());
         }

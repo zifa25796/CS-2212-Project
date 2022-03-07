@@ -83,7 +83,6 @@ public class LoginForm {
         frame.setResizable(false);
         // Set program to end on EXIT event
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         // Create ImageIcon Object, and set window icon to "icon\crypto.png"
         ImageIcon img = new ImageIcon("icon\\crypto.png");
         frame.setIconImage(img.getImage());
