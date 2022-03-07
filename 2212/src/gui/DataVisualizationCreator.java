@@ -208,30 +208,29 @@ public class DataVisualizationCreator {
     private void createBar() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
-        // Set the value of the bar graph
-        // 1. counter
-        // 2. broker name
-        // 3. strategy nam
-//        for (TradeBroker broker: User.getInstance().getBrokerList()) {
-//            dataset.setValue((double)broker.getStrategy().getCounter(), (Comparable)broker.getName(), (Comparable)broker.getStrategy().getName());
-//        }
-
-        HashMap<String, HashMap<String, Integer>> BarChartData = new HashMap<>();
+        // For each log
         for (TradeResult result: User.getInstance().getTradeLog()) {
-            if (!BarChartData.containsKey(result.name)) {
-                BarChartData.put(result.name, new HashMap<>());
+            // If the double hashmap does not contain current broker
+            if (!User.BarChartData.containsKey(result.name)) {
+                // Create a new one
+                User.BarChartData.put(result.name, new HashMap<>());
             }
-            HashMap<String, Integer> temp = BarChartData.get(result.name);
+
+            HashMap<String, Integer> temp = User.BarChartData.get(result.name);
+            // If the hashmap does contain current broker's strategy
             if (temp.containsKey(result.strategy)) {
+                // Add one to the value
                 temp.put(result.strategy, temp.get(result.strategy) + 1);
             } else {
+                // Create a new one
                 temp.put(result.strategy, 1);
             }
         }
 
-        for (String nameKey: BarChartData.keySet()) {
-            for (String stratKey: BarChartData.get(nameKey).keySet()) {
-                dataset.setValue((double)BarChartData.get(nameKey).get(stratKey), (Comparable)nameKey, (Comparable)stratKey);
+        // For each broker and each strategy
+        for (String nameKey: User.BarChartData.keySet()) {
+            for (String stratKey: User.BarChartData.get(nameKey).keySet()) {
+                dataset.setValue((double)User.BarChartData.get(nameKey).get(stratKey), (Comparable)nameKey, (Comparable)stratKey);
             }
         }
 

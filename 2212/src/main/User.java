@@ -30,6 +30,10 @@ public class User {
      * A variable containing the list of broker
      */
     private ArrayList<TradeBroker> brokerList;
+    /**
+     * A public static variable containing the BarChat info
+     */
+    public static HashMap<String, HashMap<String, Integer>> BarChartData = new HashMap<>();
 
     /**
      * {@link User} class initializer
